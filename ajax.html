@@ -10,10 +10,55 @@
 </head>
 
 <body>
+  <input type="file" class="file" />
+  <button class="btn">提交</button>
   <script>
-    $.get('http://192.168.0.169:8080/keyou/school/list', function(res) {
+    $.get('http://192.168.0.170:8080/keyou/v1/mental-test-questions?number=0&size=10&name=&region=&code=&times=1533867416552', function(res) {
       if (res)
         $('body').append('ok')
+    })
+    fetch('http://192.168.0.169:8080/keyou/school/list?pageIndex=1&pageSize=10&title=&region=') // 返回一个Promise对象
+      .then((res) => {
+        return res.json() // res.text()是一个Promise对象
+      })
+      .then((res) => {
+        console.log(res) // res是最终的结果
+      })
+
+    $('.btn').click(function() {
+      var url = 'http://192.168.0.169:8080/keyou/student/saveExcel'
+      var type = 'POST'
+      var file = $('.file').get(0).files[0];
+      console.log(file);
+      let data = new FormData()
+      data.append('file', file)
+      // $.ajax({
+      //   url,
+      //   type,
+      //   data,
+      //   cache: false,
+      //   processData: false,
+      //   contentType: false,
+      //   success: function(data) {
+      //     console.log(data);
+      //   }
+      // });
+      fetch(url, {
+        method: type,
+        body: data,
+        // credentials: 'include',
+        // headers: {
+        //   'Accept': 'application/json',
+        //   'Content-Type': 'multipart/form-data'
+        // },
+        // mode: "cors",
+        // cache: "force-cache"
+      }).then(res => {
+        return res.json()
+      }).then(res => {
+        console.log(12345)
+        console.log(res)
+      })
     })
   </script>
 
